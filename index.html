@@ -1,93 +1,331 @@
-<!DOCTYPE HTML>
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<title> Shubham Draveriya</title>
-	<link rel="icon" href="images/favicon.ico"/>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <meta name="author" CONTENT="Shubham Draveriya">
-	<meta name="author" content="draveriya">
-	<meta name="robots" content="index, follow" />
-	<meta name="description" content="Shubham Draveriya website">
-	<meta google-site-verification: googlee5740b1e8f086bc4.html />
-	<link rel="stylesheet" href="assets/css/main.css" />
-	<noscript>
-		<link rel="stylesheet" href="assets/css/noscript.css" />
-	</noscript>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="Shubham Draveriya" />
+  <meta name="robots" content="index, follow" />
+  <meta name="description" content="VLSI and Embedded Systems engineering portfolio of Shubham Draveriya." />
+  <meta name="theme-color" content="#0a0f14" />
+  <title>Shubham Draveriya | VLSI + Embedded Systems</title>
+  <link rel="icon" href="images/favicon.ico" />
+  <link rel="stylesheet" href="assets/css/main.css" />
 </head>
+<body>
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <!-- Header / Navigation --> 
+  <header class="site-header">
+    <div class="header-brand">
+      <span class="brand-chip" aria-hidden="true"></span>
+      <div>
+        <p class="eyebrow">VLSI • RTL • Embedded Systems</p>
+        <h1>Shubham Draveriya</h1>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <a href="#hero">Hero</a>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a class="button ghost" href="#contact">Download Resume</a>
+      <a class="button" href="#projects">View IP Blocks</a>
+    </div>
+  </header>
 
-<body class="is-preload">
+  <main>
+    <!-- HERO / LANDING SECTION -->
+    <section id="hero" class="hero">
+      <div class="hero-content">
+        <p class="signal">System Bring-up | RTL Debug | Silicon Verification</p>
+        <h2>
+          Designing compute blocks that boot on first silicon.
+          <span class="cursor" aria-hidden="true"></span>
+        </h2>
+        <p class="lead">
+          I build RISC-V CPUs, verify RTL with waveform-driven analysis, and integrate
+          embedded software on FPGA prototypes. My focus is clean microarchitecture,
+          deterministic timing, and debug-ready systems.
+        </p>
+        <div class="hero-actions">
+          <a class="button" href="#projects">Featured Project</a>
+          <a class="button ghost" href="#contact">Contact</a>
+        </div>
+        <div class="status-panel">
+          <div>
+            <p class="label">Lab Status</p>
+            <p class="value">FPGA Bring-up / Waveform Review</p>
+          </div>
+          <div>
+            <p class="label">Current Focus</p>
+            <p class="value">RV32I Control + Verification</p>
+          </div>
+          <div>
+            <p class="label">Location</p>
+            <p class="value">Hardware Lab • India</p>
+          </div>
+        </div>
+      </div>
+      <aside class="hero-panel">
+        <div class="panel-header">
+          <span class="panel-dot"></span>
+          <span class="panel-dot"></span>
+          <span class="panel-dot"></span>
+          <p>bringup.log</p>
+        </div>
+        <div class="panel-body">
+          <p><span class="prompt">$</span> load rv32i_core</p>
+          <p><span class="prompt">$</span> run sim --test fibonacci.s</p>
+          <p class="success">✔ PASS: regfile writeback stable</p>
+          <p class="success">✔ PASS: branch target resolved</p>
+          <p class="warning">⚠ NOTE: investigate flush on jalr</p>
+          <div class="waveform">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+      </aside>
+    </section>
 
-	
-	<div id="wrapper">
+    <!-- ABOUT ME -->
+    <section id="about" class="section about">
+      <div class="section-title">
+        <p class="eyebrow">About Me</p>
+        <h2>Engineer Profile</h2>
+      </div>
+      <div class="about-grid">
+        <p>
+          I am an M.Tech VLSI student specializing in frontend VLSI, RTL design,
+          and embedded systems. I work on CPU microarchitecture, RISC-V processors,
+          FPGA-based systems, and low-level hardware-software integration.
+        </p>
+        <p>
+          I enjoy bringing up hardware from scratch — writing Verilog, debugging
+          waveforms, running assembly on custom cores, and fixing real bring-up bugs.
+        </p>
+        <div class="about-meta">
+          <div>
+            <p class="label">Primary Domains</p>
+            <p class="value">RTL Design • CPU Microarchitecture • Embedded</p>
+          </div>
+          <div>
+            <p class="label">Focus Areas</p>
+            <p class="value">Control Logic • Verification • FPGA Prototyping</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-		
-		<header id="header">
-			<div class="logo">
-				<span class="fa-dice"></span>
-			</div>
-			<div class="content">
-				<div class="inner">
-					<h1>Welcome</h1>
-					<h3>Welcome to the Official Website Of Shubham Draveriya</h3>
-				</div>
-			</div>
-			<nav>
-				<ul>
-					<li><a href="#intro">Intro</a></li>
-					<li><a href="#about">Projects</a></li>
-					<li><a href="#contact">Contact</a></li>
+    <!-- PROJECTS -->
+    <section id="projects" class="section projects">
+      <div class="section-title">
+        <p class="eyebrow">Projects</p>
+        <h2>RTL IP Blocks</h2>
+      </div>
 
-				</ul>
-			</nav>
-		</header>
+      <article class="project-card featured">
+        <div class="project-header">
+          <div>
+            <p class="eyebrow">Featured Project</p>
+            <h3>RISC-V Single-Core Processor (RV32I)</h3>
+          </div>
+          <a class="button ghost" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+        <p class="project-overview">
+          Designed and validated a complete RV32I core in Verilog with a clean
+          fetch/decode/execute/writeback pipeline and verified correctness using
+          assembly-level programs.
+        </p>
+        <div class="project-grid">
+          <div>
+            <h4>Overview</h4>
+            <ul>
+              <li>End-to-end RV32I implementation with control logic and datapath.</li>
+              <li>Assembly programs executed directly on the core.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>What I Built</h4>
+            <ul>
+              <li>Instruction fetch, decode, ALU, register file, and writeback.</li>
+              <li>Control flow for branches, jumps, and program termination.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>What I Debugged</h4>
+            <ul>
+              <li>Register writeback integrity across instruction classes.</li>
+              <li>Control flow hazards using waveform timing.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Tools Used</h4>
+            <ul>
+              <li>Verilog HDL</li>
+              <li>Icarus Verilog</li>
+              <li>GTKWave</li>
+              <li>RISC-V Assembly</li>
+            </ul>
+          </div>
+        </div>
+      </article>
 
-		
-		<div id="main">
+      <div class="project-grid secondary">
+        <article class="project-card">
+          <div class="project-header">
+            <h3>Pipelined RISC-V Core</h3>
+            <a class="button ghost" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+          <p class="project-overview">Placeholder for a pipelined RV32I/RV32IM core with hazard handling.</p>
+          <div class="project-grid">
+            <div>
+              <h4>Overview</h4>
+              <p>Pipeline stages, forwarding, and stall control.</p>
+            </div>
+            <div>
+              <h4>What I Built</h4>
+              <p>Instruction pipeline and hazard resolution.</p>
+            </div>
+            <div>
+              <h4>What I Debugged</h4>
+              <p>Data hazards, flush behavior, and timing closure.</p>
+            </div>
+            <div>
+              <h4>Tools Used</h4>
+              <p>Verilog HDL • GTKWave • FPGA prototyping.</p>
+            </div>
+          </div>
+        </article>
 
-			
-			<article id="intro">
-				<h2 class="major">Intro</h2>
-				<span class="image main"><img src="images/pic01.gif" alt="" /></span>
-				<h3><i>Hello!! My name is Shubham draveriya. I am currently studing at Guru Gobind Singh University and doing B.Tech Program. My main hobby is coding and currently Learning Javascript. I want to become a full stack developer.To See my Projects </i><a href="#about"><b>Click Here</b></a> </h3>
-			</article>
+        <article class="project-card">
+          <div class="project-header">
+            <h3>AXI4-Lite Interface</h3>
+            <a class="button ghost" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+          <p class="project-overview">Placeholder for a reusable AXI4-Lite slave interface for SoC integration.</p>
+          <div class="project-grid">
+            <div>
+              <h4>Overview</h4>
+              <p>AXI4-Lite compliant register map.</p>
+            </div>
+            <div>
+              <h4>What I Built</h4>
+              <p>Handshake logic and address decoding.</p>
+            </div>
+            <div>
+              <h4>What I Debugged</h4>
+              <p>Latency, backpressure, and timing edges.</p>
+            </div>
+            <div>
+              <h4>Tools Used</h4>
+              <p>Verilog HDL • Simulation testbenches.</p>
+            </div>
+          </div>
+        </article>
 
-			
-			<article id="about">
-				<h2 class="major">Projects</h2>
-				<span class="image main"><img src="images/pic02.gif" /></span>
-				<h3><i>1) I made a News app that automatically updates the latest News. You can give it a view by</i><br/> <a href="https://shubhamdraveriya.github.io/dailynews/#/" target="_blank" class="btn-primary" >Clicking Here</a></h3>
-			</article>
+        <article class="project-card">
+          <div class="project-header">
+            <h3>FPGA / Embedded Projects</h3>
+            <a class="button ghost" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+          <p class="project-overview">Placeholder for FPGA bring-up and embedded integration projects.</p>
+          <div class="project-grid">
+            <div>
+              <h4>Overview</h4>
+              <p>FPGA-based systems and hardware-software integration.</p>
+            </div>
+            <div>
+              <h4>What I Built</h4>
+              <p>Embedded firmware and peripheral drivers.</p>
+            </div>
+            <div>
+              <h4>What I Debugged</h4>
+              <p>Board-level bring-up and real-time issues.</p>
+            </div>
+            <div>
+              <h4>Tools Used</h4>
+              <p>FPGA toolchains • Embedded C • Logic analyzers.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
 
-			
-			<article id="contact">
-				<h2 class="major">Contact</h2>
+    <!-- SKILLS & TOOLS -->
+    <section id="skills" class="section skills">
+      <div class="section-title">
+        <p class="eyebrow">Skills & Tools</p>
+        <h2>Lab Stack</h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h3>RTL & Verification</h3>
+          <ul>
+            <li>Verilog / SystemVerilog</li>
+            <li>Testbench development</li>
+            <li>Timing analysis & waveform debug</li>
+          </ul>
+        </div>
+        <div class="skill-card">
+          <h3>CPU & Microarchitecture</h3>
+          <ul>
+            <li>RISC-V ISA implementation</li>
+            <li>Control/datapath design</li>
+            <li>Pipeline and hazard analysis</li>
+          </ul>
+        </div>
+        <div class="skill-card">
+          <h3>FPGA & Embedded</h3>
+          <ul>
+            <li>FPGA bring-up</li>
+            <li>Embedded C / assembly</li>
+            <li>Hardware-software co-design</li>
+          </ul>
+        </div>
+        <div class="skill-card">
+          <h3>Toolchain</h3>
+          <ul>
+            <li>Icarus Verilog</li>
+            <li>GTKWave</li>
+            <li>Vivado / Quartus (placeholder)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-				<ul class="icons">
-					<li><a href="https://twitter.com/shubhamd2727" target="_blank" class="icon brands fa-twitter"><span class="label">Twitter<p></p></span></a><h3>Twitter</h3></li>
-					<li><a href="https://facebook.com" target="_blank" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a><h3>Facebook</h3></li>
-					<li><a href="https://www.instagram.com" target="_blank" class="icon brands fa-instagram"><span class="label">Instagram</span></a><h3>Instagram</h3></li>
-					<li><a href="https://github.com/shubhamdraveriya" target="_blank" class="icon brands fa-github"><span class="label">GitHub</span></a><h3>GitHub</h3></li>
-					<li><a href="https://www.linkedin.com/in/shubham-draveriya-921756224/" target="_blank" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a><h3>GitHub</h3></li>
-				</ul>
-			</article>
+    <!-- CONTACT / LINKS -->
+    <section id="contact" class="section contact">
+      <div class="section-title">
+        <p class="eyebrow">Contact</p>
+        <h2>Signal Links</h2>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h3>Let’s Connect</h3>
+          <p>
+            Reach out for RTL roles, bring-up collaborations, or to discuss
+            microarchitecture projects.
+          </p>
+          <div class="contact-actions">
+            <a class="button" href="mailto:shubham@example.com">Email</a>
+            <a class="button ghost" href="#">Download Resume</a>
+          </div>
+        </div>
+        <div class="contact-card links">
+          <h3>Links</h3>
+          <ul>
+            <li><a href="https://github.com/" target="_blank" rel="noreferrer">GitHub (placeholder)</a></li>
+            <li><a href="https://linkedin.com/" target="_blank" rel="noreferrer">LinkedIn (placeholder)</a></li>
+            <li><a href="https://www.behance.net/" target="_blank" rel="noreferrer">Project Archive (placeholder)</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
 
-			
-		</div>
-
-	</div>
-
-	
-	<div id="bg"></div>
-
-	
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/main.js"></script>
-
+  <footer class="site-footer">
+    <p>© 2024 Shubham Draveriya • VLSI + Embedded Systems Portfolio</p>
+  </footer>
 </body>
-
 </html>
