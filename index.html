@@ -12,6 +12,13 @@
   <link rel="stylesheet" href="assets/css/main.css" />
 </head>
 <body>
+  <div class="loading-screen" role="status" aria-live="polite">
+    <canvas id="fractal-canvas" aria-hidden="true"></canvas>
+    <div class="loading-copy">
+      <p class="loading-title">Synthesizing Recursive Canopy</p>
+      <p class="loading-subtitle">Generating branch topology &amp; airflow simulation…</p>
+    </div>
+  </div>
   <div class="grid-overlay" aria-hidden="true"></div>
   <!-- Header / Navigation --> 
   <header class="site-header">
@@ -328,5 +335,132 @@
   <footer class="site-footer">
     <p>© 2024 Shubham Draveriya • VLSI + Embedded Systems Portfolio</p>
   </footer>
+  <script>
+    (() => {
+      const canvas = document.getElementById("fractal-canvas");
+      const screen = document.querySelector(".loading-screen");
+      if (!canvas || !screen) {
+        return;
+      }
+
+      const ctx = canvas.getContext("2d");
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      document.body.classList.add("is-loading");
+
+      let width = 0;
+      let height = 0;
+      let branches = [];
+      let startTime = performance.now();
+      let fadeTriggered = false;
+
+      const totalGrowthMs = prefersReducedMotion ? 800 : 2600;
+      const canopyHoldMs = prefersReducedMotion ? 400 : 1100;
+
+      const seedRandom = (() => {
+        let seed = 1337;
+        return () => {
+          seed = (seed * 9301 + 49297) % 233280;
+          return seed / 233280;
+        };
+      })();
+
+      const resizeCanvas = () => {
+        width = canvas.clientWidth = window.innerWidth;
+        height = canvas.clientHeight = window.innerHeight;
+        canvas.width = Math.floor(width * devicePixelRatio);
+        canvas.height = Math.floor(height * devicePixelRatio);
+        ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+        buildTree();
+      };
+
+      const buildTree = () => {
+        branches = [];
+        const trunkLength = Math.min(width, height) * 0.28;
+        const startX = width * 0.5;
+        const startY = height * 0.85;
+
+        const grow = (x, y, length, angle, depth) => {
+          const endX = x + Math.cos(angle) * length;
+          const endY = y + Math.sin(angle) * length;
+          branches.push({
+            x,
+            y,
+            endX,
+            endY,
+            length,
+            angle,
+            depth
+          });
+
+          if (depth <= 0) {
+            return;
+          }
+          const nextLength = length * (0.68 + seedRandom() * 0.06);
+          const variance = 0.18 + seedRandom() * 0.12;
+          const leftAngle = angle - (0.45 + variance);
+          const rightAngle = angle + (0.45 + variance);
+          grow(endX, endY, nextLength, leftAngle, depth - 1);
+          grow(endX, endY, nextLength, rightAngle, depth - 1);
+        };
+
+        grow(startX, startY, trunkLength, -Math.PI / 2, 8);
+      };
+
+      const drawBranch = (branch, progress, sway) => {
+        const swayFactor = sway * (1 - branch.depth * 0.08);
+        const angle = branch.angle + swayFactor;
+        const endX = branch.x + Math.cos(angle) * branch.length;
+        const endY = branch.y + Math.sin(angle) * branch.length;
+        const drawLength = branch.length * progress;
+        const drawEndX = branch.x + Math.cos(angle) * drawLength;
+        const drawEndY = branch.y + Math.sin(angle) * drawLength;
+
+        const gradient = ctx.createLinearGradient(branch.x, branch.y, endX, endY);
+        gradient.addColorStop(0, "rgba(79, 220, 255, 0.9)");
+        gradient.addColorStop(1, "rgba(57, 255, 136, 0.75)");
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = Math.max(1.2, 5 - branch.depth * 0.4);
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(branch.x, branch.y);
+        ctx.lineTo(drawEndX, drawEndY);
+        ctx.stroke();
+      };
+
+      const render = (now) => {
+        const elapsed = now - startTime;
+        const growthProgress = Math.min(1, elapsed / totalGrowthMs);
+        const sway = prefersReducedMotion ? 0 : Math.sin(now / 1400) * 0.06;
+
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = "rgba(10, 15, 20, 0.92)";
+        ctx.fillRect(0, 0, width, height);
+
+        branches.forEach((branch) => {
+          const branchProgress = Math.min(1, growthProgress * (1 + branch.depth * 0.08));
+          drawBranch(branch, branchProgress, sway);
+        });
+
+        if (!fadeTriggered && elapsed > totalGrowthMs + canopyHoldMs) {
+          fadeTriggered = true;
+          screen.classList.add("is-hidden");
+          document.body.classList.remove("is-loading");
+          setTimeout(() => screen.remove(), 1200);
+        }
+
+        if (!fadeTriggered) {
+          requestAnimationFrame(render);
+        }
+      };
+
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+      requestAnimationFrame((time) => {
+        startTime = time;
+        render(time);
+      });
+    })();
+  </script>
 </body>
 </html>
