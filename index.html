@@ -355,38 +355,26 @@
       let nodes = [];
       let gates = [];
       let buses = [];
-      let traces = [];
-      let chip = null;
       let startTime = performance.now();
       let fadeTriggered = false;
 
       const palette = {
         bg: "#0a0f14",
         grid: "rgba(79, 220, 255, 0.05)",
-        node: "rgba(79, 220, 255, 0.85)",
-        nodeSoft: "rgba(227, 238, 247, 0.72)",
-        accent: "rgba(57, 255, 255, 0.9)",
+        node: "rgba(79, 220, 255, 0.8)",
+        nodeSoft: "rgba(227, 238, 247, 0.6)",
+        accent: "rgba(57, 255, 255, 0.85)",
         accentAlt: "rgba(79, 220, 255, 0.95)",
-        bus: "rgba(79, 220, 255, 0.6)",
-        trace: "rgba(79, 220, 255, 0.25)",
-        die: "rgba(79, 220, 255, 0.2)"
+        bus: "rgba(79, 220, 255, 0.65)"
       };
 
-      const schedule = prefersReducedMotion
-        ? {
-            reset: 250,
-            transistors: 450,
-            gates: 450,
-            buses: 450,
-            text: 300
-          }
-        : {
-            reset: 450,
-            transistors: 850,
-            gates: 750,
-            buses: 850,
-            text: 500
-          };
+      const schedule = {
+        reset: 1200,
+        transistors: 2000,
+        gates: 1900,
+        buses: 1900,
+        text: 1100
+      };
 
       const totalDuration = Object.values(schedule).reduce((sum, value) => sum + value, 0);
 
@@ -408,79 +396,48 @@
       };
 
       const buildScene = () => {
-        const marginX = width * 0.08;
-        const marginY = height * 0.12;
-        chip = {
-          x: marginX,
-          y: marginY,
-          w: width - marginX * 2,
-          h: height - marginY * 2,
-          radius: Math.min(width, height) * 0.035
-        };
-
-        const spacing = Math.max(14, Math.min(width, height) / (prefersReducedMotion ? 24 : 34));
-        const cols = Math.floor(chip.w / spacing);
-        const rows = Math.floor(chip.h / spacing);
+        const spacing = Math.max(10, Math.min(width, height) / (prefersReducedMotion ? 28 : 42));
+        const cols = Math.floor(width / spacing);
+        const rows = Math.floor(height / spacing);
         nodes = [];
-        const maxNodes = prefersReducedMotion ? 650 : 1300;
-        let nodeCount = 0;
         for (let y = 0; y <= rows; y += 1) {
           for (let x = 0; x <= cols; x += 1) {
-            if (nodeCount >= maxNodes) {
-              break;
-            }
             const jitterX = (seedRandom() - 0.5) * spacing * 0.4;
             const jitterY = (seedRandom() - 0.5) * spacing * 0.4;
             nodes.push({
-              x: chip.x + x * spacing + jitterX,
-              y: chip.y + y * spacing + jitterY,
+              x: x * spacing + jitterX,
+              y: y * spacing + jitterY,
               activation: schedule.reset + seedRandom() * schedule.transistors
             });
-            nodeCount += 1;
-          }
-          if (nodeCount >= maxNodes) {
-            break;
           }
         }
 
-        const gateColumns = 3;
-        const gateRows = 3;
+        const gateColumns = Math.max(4, Math.floor(width / 260));
+        const gateRows = Math.max(2, Math.floor(height / 220));
         gates = [];
         const gateTypes = ["AND", "OR", "XOR"];
-        const gateSpacingX = chip.w / (gateColumns + 1);
-        const gateSpacingY = chip.h / (gateRows + 1);
         for (let row = 0; row < gateRows; row += 1) {
           for (let col = 0; col < gateColumns; col += 1) {
             const type = gateTypes[(row + col) % gateTypes.length];
-            const x = chip.x + gateSpacingX * (col + 1);
-            const y = chip.y + gateSpacingY * (row + 1);
+            const x = (col + 0.5) * (width / gateColumns);
+            const y = (row + 0.6) * (height / gateRows);
             gates.push({
               type,
               x,
               y,
-              size: Math.min(chip.w, chip.h) * 0.06,
               activation: schedule.reset + schedule.transistors + seedRandom() * schedule.gates
             });
           }
         }
 
         buses = [
-          { x1: chip.x + chip.w * 0.08, y1: chip.y + chip.h * 0.22, x2: chip.x + chip.w * 0.92, y2: chip.y + chip.h * 0.22 },
-          { x1: chip.x + chip.w * 0.08, y1: chip.y + chip.h * 0.5, x2: chip.x + chip.w * 0.92, y2: chip.y + chip.h * 0.5 },
-          { x1: chip.x + chip.w * 0.08, y1: chip.y + chip.h * 0.78, x2: chip.x + chip.w * 0.92, y2: chip.y + chip.h * 0.78 },
-          { x1: chip.x + chip.w * 0.22, y1: chip.y + chip.h * 0.12, x2: chip.x + chip.w * 0.22, y2: chip.y + chip.h * 0.88 },
-          { x1: chip.x + chip.w * 0.5, y1: chip.y + chip.h * 0.12, x2: chip.x + chip.w * 0.5, y2: chip.y + chip.h * 0.88 },
-          { x1: chip.x + chip.w * 0.78, y1: chip.y + chip.h * 0.12, x2: chip.x + chip.w * 0.78, y2: chip.y + chip.h * 0.88 }
+          { x1: width * 0.1, y1: height * 0.2, x2: width * 0.9, y2: height * 0.2 },
+          { x1: width * 0.15, y1: height * 0.5, x2: width * 0.85, y2: height * 0.5 },
+          { x1: width * 0.2, y1: height * 0.78, x2: width * 0.8, y2: height * 0.78 },
+          { x1: width * 0.2, y1: height * 0.2, x2: width * 0.2, y2: height * 0.78 },
+          { x1: width * 0.5, y1: height * 0.2, x2: width * 0.5, y2: height * 0.78 },
+          { x1: width * 0.8, y1: height * 0.2, x2: width * 0.8, y2: height * 0.78 }
         ];
-
-        traces = gates.map((gate) => ({
-          x1: gate.x - gate.size * 0.8,
-          y1: gate.y,
-          x2: gate.x + gate.size * 0.8,
-          y2: gate.y,
-          midX: gate.x,
-          midY: gate.y - gate.size * 0.6
-        }));
       };
 
       const drawGrid = () => {
@@ -499,29 +456,9 @@
         ctx.stroke();
       };
 
-      const drawDie = () => {
-        if (!chip) {
-          return;
-        }
-        ctx.strokeStyle = palette.die;
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        const r = chip.radius;
-        ctx.moveTo(chip.x + r, chip.y);
-        ctx.lineTo(chip.x + chip.w - r, chip.y);
-        ctx.quadraticCurveTo(chip.x + chip.w, chip.y, chip.x + chip.w, chip.y + r);
-        ctx.lineTo(chip.x + chip.w, chip.y + chip.h - r);
-        ctx.quadraticCurveTo(chip.x + chip.w, chip.y + chip.h, chip.x + chip.w - r, chip.y + chip.h);
-        ctx.lineTo(chip.x + r, chip.y + chip.h);
-        ctx.quadraticCurveTo(chip.x, chip.y + chip.h, chip.x, chip.y + chip.h - r);
-        ctx.lineTo(chip.x, chip.y + r);
-        ctx.quadraticCurveTo(chip.x, chip.y, chip.x + r, chip.y);
-        ctx.stroke();
-      };
-
       const drawNodes = (elapsed) => {
-        ctx.shadowBlur = 16;
-        ctx.shadowColor = "rgba(79, 220, 255, 0.6)";
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = "rgba(79, 220, 255, 0.55)";
         nodes.forEach((node) => {
           if (elapsed < node.activation) {
             return;
@@ -529,47 +466,34 @@
           const alpha = Math.min(1, (elapsed - node.activation) / 400);
           ctx.fillStyle = `rgba(79, 220, 255, ${0.2 + alpha * 0.6})`;
           ctx.beginPath();
-          ctx.arc(node.x, node.y, 1.8, 0, Math.PI * 2);
+          ctx.arc(node.x, node.y, 1.5, 0, Math.PI * 2);
           ctx.fill();
         });
         ctx.shadowBlur = 0;
       };
 
       const drawGateShape = (gate, glow) => {
-        const size = gate.size;
-        const left = gate.x - size * 0.55;
-        const right = gate.x + size * 0.55;
+        const size = Math.min(width, height) * 0.04;
+        const left = gate.x - size * 0.6;
         const top = gate.y - size * 0.35;
+        const right = gate.x + size * 0.6;
         const bottom = gate.y + size * 0.35;
-        const midY = gate.y;
-        const inputOffset = size * 0.18;
-        const outputX = right + size * 0.18;
         ctx.strokeStyle = glow ? palette.accentAlt : "rgba(79, 220, 255, 0.35)";
-        ctx.lineWidth = glow ? 1.7 : 1.4;
-
-        ctx.beginPath();
-        ctx.moveTo(left - inputOffset, top + size * 0.12);
-        ctx.lineTo(left, top + size * 0.12);
-        ctx.moveTo(left - inputOffset, bottom - size * 0.12);
-        ctx.lineTo(left, bottom - size * 0.12);
-        ctx.moveTo(right, midY);
-        ctx.lineTo(outputX, midY);
-        ctx.stroke();
-
+        ctx.lineWidth = 1.4;
         ctx.beginPath();
         if (gate.type === "AND") {
           ctx.moveTo(left, top);
           ctx.lineTo(left + size * 0.3, top);
-          ctx.arc(left + size * 0.3, midY, size * 0.35, -Math.PI / 2, Math.PI / 2);
+          ctx.arc(left + size * 0.3, gate.y, size * 0.35, -Math.PI / 2, Math.PI / 2);
           ctx.lineTo(left, bottom);
           ctx.closePath();
         } else {
-          ctx.moveTo(left, top);
-          ctx.quadraticCurveTo(left + size * 0.35, midY, left, bottom);
-          ctx.quadraticCurveTo(left + size * 0.55, midY, right, midY);
+          ctx.moveTo(left + size * 0.1, top);
+          ctx.quadraticCurveTo(left + size * 0.45, gate.y, left + size * 0.1, bottom);
+          ctx.quadraticCurveTo(left + size * 0.55, gate.y, right, gate.y);
           if (gate.type === "XOR") {
-            ctx.moveTo(left - size * 0.14, top);
-            ctx.quadraticCurveTo(left + size * 0.2, midY, left - size * 0.14, bottom);
+            ctx.moveTo(left - size * 0.08, top);
+            ctx.quadraticCurveTo(left + size * 0.3, gate.y, left - size * 0.08, bottom);
           }
         }
         ctx.stroke();
@@ -591,21 +515,6 @@
         ctx.shadowBlur = 0;
       };
 
-      const drawTraces = (elapsed) => {
-        if (elapsed < schedule.reset + schedule.transistors) {
-          return;
-        }
-        ctx.strokeStyle = palette.trace;
-        ctx.lineWidth = 1;
-        traces.forEach((trace) => {
-          ctx.beginPath();
-          ctx.moveTo(trace.x1, trace.y1);
-          ctx.lineTo(trace.midX, trace.midY);
-          ctx.lineTo(trace.x2, trace.y2);
-          ctx.stroke();
-        });
-      };
-
       const drawBuses = (elapsed) => {
         if (elapsed < schedule.reset + schedule.transistors + schedule.gates) {
           return;
@@ -613,9 +522,9 @@
         const phaseTime = elapsed - (schedule.reset + schedule.transistors + schedule.gates);
         const progress = Math.min(1, phaseTime / schedule.buses);
         ctx.strokeStyle = palette.bus;
-        ctx.lineWidth = 2.2;
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = "rgba(79, 220, 255, 0.75)";
+        ctx.lineWidth = 2;
+        ctx.shadowBlur = 16;
+        ctx.shadowColor = "rgba(79, 220, 255, 0.65)";
         buses.forEach((bus, index) => {
           const offset = (index % 2) * 0.2;
           ctx.beginPath();
@@ -625,9 +534,9 @@
           const pulseProgress = (progress + offset) % 1;
           const pulseX = bus.x1 + (bus.x2 - bus.x1) * pulseProgress;
           const pulseY = bus.y1 + (bus.y2 - bus.y1) * pulseProgress;
-          ctx.fillStyle = palette.accentAlt;
+          ctx.fillStyle = palette.accent;
           ctx.beginPath();
-          ctx.arc(pulseX, pulseY, 4.2, 0, Math.PI * 2);
+          ctx.arc(pulseX, pulseY, 3.5, 0, Math.PI * 2);
           ctx.fill();
         });
         ctx.shadowBlur = 0;
@@ -650,7 +559,7 @@
 
       const drawResetPulse = (elapsed) => {
         const resetProgress = Math.min(1, elapsed / schedule.reset);
-        const radius = Math.max(width, height) * (0.1 + resetProgress * 0.4);
+        const radius = Math.max(width, height) * (0.1 + resetProgress * 0.6);
         ctx.strokeStyle = `rgba(79, 220, 255, ${0.35 * (1 - resetProgress)})`;
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -672,15 +581,13 @@
 
         drawGrid();
         drawResetPulse(elapsed);
-        drawDie();
         drawNodes(elapsed);
-        drawTraces(elapsed);
         drawGates(elapsed);
         drawBuses(elapsed);
         updateStatus(elapsed);
         updateCopyOpacity(elapsed);
 
-        if (!fadeTriggered && elapsed >= totalDuration + 300) {
+        if (!fadeTriggered && elapsed >= totalDuration + 500) {
           fadeTriggered = true;
           screen.classList.add("is-hidden");
           document.body.classList.remove("is-loading");
