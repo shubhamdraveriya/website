@@ -103,65 +103,6 @@ ul {
   height: 100%;
 }
 
-.loading-holo {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
-}
-
-.loading-holo .holo-ring {
-  position: absolute;
-  width: clamp(160px, 28vw, 320px);
-  height: clamp(160px, 28vw, 320px);
-  border-radius: 50%;
-  border: 1px solid rgba(79, 220, 255, 0.35);
-  box-shadow:
-    0 0 25px rgba(79, 220, 255, 0.2),
-    inset 0 0 20px rgba(79, 220, 255, 0.2);
-  animation: ring-spin 3.6s linear infinite;
-}
-
-.loading-holo .ring-two {
-  width: clamp(200px, 34vw, 380px);
-  height: clamp(200px, 34vw, 380px);
-  border-style: dashed;
-  border-color: rgba(57, 255, 136, 0.5);
-  animation-duration: 5s;
-}
-
-.loading-holo .ring-three {
-  width: clamp(240px, 40vw, 460px);
-  height: clamp(240px, 40vw, 460px);
-  border-color: rgba(79, 220, 255, 0.25);
-  animation-direction: reverse;
-  animation-duration: 7s;
-}
-
-.loading-holo .holo-core {
-  width: 88px;
-  height: 88px;
-  border-radius: 16px;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(79, 220, 255, 0.9), transparent 60%),
-    linear-gradient(135deg, rgba(57, 255, 136, 0.2), rgba(79, 220, 255, 0.2));
-  border: 1px solid rgba(79, 220, 255, 0.6);
-  box-shadow:
-    0 0 30px rgba(79, 220, 255, 0.4),
-    0 0 60px rgba(57, 255, 136, 0.3);
-  animation: core-pulse 2.4s ease-in-out infinite;
-}
-
-.loading-holo .scanline {
-  position: absolute;
-  width: min(70vw, 520px);
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(79, 220, 255, 0.9), transparent);
-  filter: drop-shadow(0 0 10px rgba(79, 220, 255, 0.8));
-  animation: scan 2.4s ease-in-out infinite;
-}
-
 .loading-copy {
   position: relative;
   z-index: 1;
@@ -240,40 +181,6 @@ ul {
   letter-spacing: 0.15em;
   text-transform: uppercase;
   font-family: "IBM Plex Mono", monospace;
-}
-
-@keyframes ring-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes core-pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.08);
-  }
-}
-
-@keyframes scan {
-  0% {
-    transform: translateY(-80px);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(80px);
-    opacity: 0.3;
-  }
 }
 
 /* ============================================
