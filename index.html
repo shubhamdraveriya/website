@@ -14,26 +14,19 @@
 <body>
   <div class="loading-screen" role="status" aria-live="polite">
     <canvas id="chip-canvas" aria-hidden="true"></canvas>
-    <div class="loading-holo" aria-hidden="true">
-      <span class="holo-ring"></span>
-      <span class="holo-ring ring-two"></span>
-      <span class="holo-ring ring-three"></span>
-      <span class="holo-core"></span>
-      <span class="scanline"></span>
-    </div>
     <div class="loading-copy">
-      <p class="loading-title">SILICON INITIALIZED</p>
-      <p class="loading-subtitle">Bootstrapping cybernetic core</p>
+      <p class="loading-title">FRACTAL AWAKENING</p>
+      <p class="loading-subtitle">Synthesizing recursive canopy</p>
       <div class="loading-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
         <span></span>
       </div>
       <p class="loading-progress-value">0%</p>
       <div class="loading-metrics">
-        <span>PLL LOCK</span>
-        <span>NV DIMM</span>
-        <span>IO SYNC</span>
+        <span>ROOT LINK</span>
+        <span>BRANCH SEED</span>
+        <span>WIND FIELD</span>
       </div>
-      <p class="loading-status" aria-hidden="true">Power-on reset…</p>
+      <p class="loading-status" aria-hidden="true">Seeding trunk lattice…</p>
     </div>
   </div>
   <div class="grid-overlay" aria-hidden="true"></div>
@@ -371,31 +364,24 @@
 
       let width = 0;
       let height = 0;
-      let nodes = [];
-      let gates = [];
-      let buses = [];
+      let branches = [];
       let startTime = performance.now();
       let fadeTriggered = false;
 
       const palette = {
         bg: "#0a0f14",
-        grid: "rgba(79, 220, 255, 0.05)",
-        node: "rgba(79, 220, 255, 0.8)",
-        nodeSoft: "rgba(227, 238, 247, 0.6)",
-        accent: "rgba(57, 255, 255, 0.85)",
-        accentAlt: "rgba(79, 220, 255, 0.95)",
-        bus: "rgba(79, 220, 255, 0.65)"
+        glow: "rgba(79, 220, 255, 0.55)",
+        trunk: "rgba(227, 238, 247, 0.85)",
+        branch: "rgba(79, 220, 255, 0.85)",
+        leaf: "rgba(57, 255, 136, 0.8)"
       };
 
       const schedule = {
-        reset: 600,
-        transistors: 800,
-        gates: 700,
-        buses: 700,
-        text: 600
+        grow: 5200,
+        settle: 900
       };
 
-      const totalDuration = Object.values(schedule).reduce((sum, value) => sum + value, 0);
+      const totalDuration = schedule.grow + schedule.settle;
 
       const seedRandom = (() => {
         let seed = 2048;
@@ -411,154 +397,93 @@
         canvas.width = Math.floor(width * devicePixelRatio);
         canvas.height = Math.floor(height * devicePixelRatio);
         ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
-        buildScene();
+        buildTree();
       };
 
-      const buildScene = () => {
-        const spacing = Math.max(10, Math.min(width, height) / (prefersReducedMotion ? 28 : 42));
-        const cols = Math.floor(width / spacing);
-        const rows = Math.floor(height / spacing);
-        nodes = [];
-        for (let y = 0; y <= rows; y += 1) {
-          for (let x = 0; x <= cols; x += 1) {
-            const jitterX = (seedRandom() - 0.5) * spacing * 0.4;
-            const jitterY = (seedRandom() - 0.5) * spacing * 0.4;
-            nodes.push({
-              x: x * spacing + jitterX,
-              y: y * spacing + jitterY,
-              activation: schedule.reset + seedRandom() * schedule.transistors
-            });
-          }
-        }
+      const buildTree = () => {
+        const trunkLength = Math.min(height * 0.32, 260);
+        const maxDepth = prefersReducedMotion ? 6 : 9;
+        const root = {
+          x: width * 0.5,
+          y: height * 0.82,
+          angle: -Math.PI / 2,
+          length: trunkLength,
+          depth: 0
+        };
+        branches = [];
 
-        const gateColumns = Math.max(4, Math.floor(width / 260));
-        const gateRows = Math.max(2, Math.floor(height / 220));
-        gates = [];
-        const gateTypes = ["AND", "OR", "XOR"];
-        for (let row = 0; row < gateRows; row += 1) {
-          for (let col = 0; col < gateColumns; col += 1) {
-            const type = gateTypes[(row + col) % gateTypes.length];
-            const x = (col + 0.5) * (width / gateColumns);
-            const y = (row + 0.6) * (height / gateRows);
-            gates.push({
-              type,
-              x,
-              y,
-              activation: schedule.reset + schedule.transistors + seedRandom() * schedule.gates
-            });
-          }
-        }
+        const addBranch = (branch) => {
+          const length = branch.length;
+          const endX = branch.x + Math.cos(branch.angle) * length;
+          const endY = branch.y + Math.sin(branch.angle) * length;
+          branches.push({
+            ...branch,
+            endX,
+            endY,
+            growStart: branch.depth / (maxDepth + 1),
+            growEnd: (branch.depth + 1) / (maxDepth + 1)
+          });
 
-        buses = [
-          { x1: width * 0.1, y1: height * 0.2, x2: width * 0.9, y2: height * 0.2 },
-          { x1: width * 0.15, y1: height * 0.5, x2: width * 0.85, y2: height * 0.5 },
-          { x1: width * 0.2, y1: height * 0.78, x2: width * 0.8, y2: height * 0.78 },
-          { x1: width * 0.2, y1: height * 0.2, x2: width * 0.2, y2: height * 0.78 },
-          { x1: width * 0.5, y1: height * 0.2, x2: width * 0.5, y2: height * 0.78 },
-          { x1: width * 0.8, y1: height * 0.2, x2: width * 0.8, y2: height * 0.78 }
-        ];
-      };
-
-      const drawGrid = () => {
-        const gridSpacing = 40;
-        ctx.strokeStyle = palette.grid;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        for (let x = 0; x <= width; x += gridSpacing) {
-          ctx.moveTo(x, 0);
-          ctx.lineTo(x, height);
-        }
-        for (let y = 0; y <= height; y += gridSpacing) {
-          ctx.moveTo(0, y);
-          ctx.lineTo(width, y);
-        }
-        ctx.stroke();
-      };
-
-      const drawNodes = (elapsed) => {
-        ctx.shadowBlur = 12;
-        ctx.shadowColor = "rgba(79, 220, 255, 0.55)";
-        nodes.forEach((node) => {
-          if (elapsed < node.activation) {
+          if (branch.depth >= maxDepth) {
             return;
           }
-          const alpha = Math.min(1, (elapsed - node.activation) / 400);
-          ctx.fillStyle = `rgba(79, 220, 255, ${0.2 + alpha * 0.6})`;
-          ctx.beginPath();
-          ctx.arc(node.x, node.y, 1.5, 0, Math.PI * 2);
-          ctx.fill();
-        });
-        ctx.shadowBlur = 0;
+
+          const nextLength = length * (0.68 + seedRandom() * 0.08);
+          const angleVariance = 0.35 + seedRandom() * 0.12;
+          const drift = (seedRandom() - 0.5) * 0.08;
+
+          addBranch({
+            x: endX,
+            y: endY,
+            angle: branch.angle - angleVariance + drift,
+            length: nextLength,
+            depth: branch.depth + 1
+          });
+          addBranch({
+            x: endX,
+            y: endY,
+            angle: branch.angle + angleVariance + drift,
+            length: nextLength,
+            depth: branch.depth + 1
+          });
+        };
+
+        addBranch(root);
       };
 
-      const drawGateShape = (gate, glow) => {
-        const size = Math.min(width, height) * 0.04;
-        const left = gate.x - size * 0.6;
-        const top = gate.y - size * 0.35;
-        const right = gate.x + size * 0.6;
-        const bottom = gate.y + size * 0.35;
-        ctx.strokeStyle = glow ? palette.accentAlt : "rgba(79, 220, 255, 0.35)";
-        ctx.lineWidth = 1.4;
-        ctx.beginPath();
-        if (gate.type === "AND") {
-          ctx.moveTo(left, top);
-          ctx.lineTo(left + size * 0.3, top);
-          ctx.arc(left + size * 0.3, gate.y, size * 0.35, -Math.PI / 2, Math.PI / 2);
-          ctx.lineTo(left, bottom);
-          ctx.closePath();
-        } else {
-          ctx.moveTo(left + size * 0.1, top);
-          ctx.quadraticCurveTo(left + size * 0.45, gate.y, left + size * 0.1, bottom);
-          ctx.quadraticCurveTo(left + size * 0.55, gate.y, right, gate.y);
-          if (gate.type === "XOR") {
-            ctx.moveTo(left - size * 0.08, top);
-            ctx.quadraticCurveTo(left + size * 0.3, gate.y, left - size * 0.08, bottom);
-          }
-        }
-        ctx.stroke();
+      const drawBackground = () => {
+        const gradient = ctx.createRadialGradient(width * 0.5, height * 0.2, 60, width * 0.5, height * 0.2, width * 0.8);
+        gradient.addColorStop(0, "rgba(79, 220, 255, 0.15)");
+        gradient.addColorStop(1, "rgba(10, 15, 20, 0)");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, width, height);
       };
 
-      const drawGates = (elapsed) => {
-        ctx.shadowBlur = 18;
-        ctx.shadowColor = "rgba(79, 220, 255, 0.6)";
-        gates.forEach((gate) => {
-          const active = elapsed >= gate.activation;
-          drawGateShape(gate, active);
-          if (active) {
-            ctx.fillStyle = palette.nodeSoft;
-            ctx.font = "10px IBM Plex Mono, monospace";
-            ctx.textAlign = "center";
-            ctx.fillText(gate.type, gate.x, gate.y + 22);
-          }
-        });
-        ctx.shadowBlur = 0;
-      };
-
-      const drawBuses = (elapsed) => {
-        if (elapsed < schedule.reset + schedule.transistors + schedule.gates) {
+      const drawBranch = (branch, progress, sway) => {
+        if (progress <= branch.growStart) {
           return;
         }
-        const phaseTime = elapsed - (schedule.reset + schedule.transistors + schedule.gates);
-        const progress = Math.min(1, phaseTime / schedule.buses);
-        ctx.strokeStyle = palette.bus;
-        ctx.lineWidth = 2;
-        ctx.shadowBlur = 16;
-        ctx.shadowColor = "rgba(79, 220, 255, 0.65)";
-        buses.forEach((bus, index) => {
-          const offset = (index % 2) * 0.2;
+        const localProgress = Math.min(1, (progress - branch.growStart) / (branch.growEnd - branch.growStart));
+        const swayOffset = sway * (1 - branch.depth / 12);
+        const angle = branch.angle + swayOffset;
+        const length = branch.length * localProgress;
+        const endX = branch.x + Math.cos(angle) * length;
+        const endY = branch.y + Math.sin(angle) * length;
+
+        const thickness = Math.max(0.6, 4 - branch.depth * 0.35);
+        ctx.strokeStyle = branch.depth < 2 ? palette.trunk : palette.branch;
+        ctx.lineWidth = thickness;
+        ctx.beginPath();
+        ctx.moveTo(branch.x, branch.y);
+        ctx.lineTo(endX, endY);
+        ctx.stroke();
+
+        if (branch.depth > 5 && localProgress > 0.8) {
+          ctx.fillStyle = palette.leaf;
           ctx.beginPath();
-          ctx.moveTo(bus.x1, bus.y1);
-          ctx.lineTo(bus.x2, bus.y2);
-          ctx.stroke();
-          const pulseProgress = (progress + offset) % 1;
-          const pulseX = bus.x1 + (bus.x2 - bus.x1) * pulseProgress;
-          const pulseY = bus.y1 + (bus.y2 - bus.y1) * pulseProgress;
-          ctx.fillStyle = palette.accent;
-          ctx.beginPath();
-          ctx.arc(pulseX, pulseY, 3.5, 0, Math.PI * 2);
+          ctx.arc(endX, endY, 1.4, 0, Math.PI * 2);
           ctx.fill();
-        });
-        ctx.shadowBlur = 0;
+        }
       };
 
       const updateStatus = (elapsed) => {
@@ -566,18 +491,18 @@
           return;
         }
         const steps = [
-          { time: 0, text: "Power-on reset…" },
-          { time: schedule.reset, text: "Transistor array biasing…" },
-          { time: schedule.reset + schedule.transistors, text: "Logic gates switching…" },
-          { time: schedule.reset + schedule.transistors + schedule.gates, text: "Data buses propagating…" },
-          { time: schedule.reset + schedule.transistors + schedule.gates + schedule.buses, text: "System verification…" }
+          { time: 0, text: "Seeding trunk lattice…" },
+          { time: schedule.grow * 0.25, text: "Splitting recursive branches…" },
+          { time: schedule.grow * 0.55, text: "Multiplying canopy geometry…" },
+          { time: schedule.grow * 0.8, text: "Charging bioluminescent tips…" },
+          { time: schedule.grow, text: "Wind field online…" }
         ];
         const current = steps.reduce((acc, step) => (elapsed >= step.time ? step : acc), steps[0]);
         statusCopy.textContent = current.text;
       };
 
       const updateProgress = (elapsed) => {
-        const progress = Math.min(1, elapsed / totalDuration);
+        const progress = Math.min(1, elapsed / schedule.grow);
         const percentage = Math.round(progress * 100);
         if (progressBar) {
           progressBar.style.width = `${percentage}%`;
@@ -590,19 +515,9 @@
         }
       };
 
-      const drawResetPulse = (elapsed) => {
-        const resetProgress = Math.min(1, elapsed / schedule.reset);
-        const radius = Math.max(width, height) * (0.1 + resetProgress * 0.6);
-        ctx.strokeStyle = `rgba(79, 220, 255, ${0.35 * (1 - resetProgress)})`;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(width * 0.5, height * 0.5, radius, 0, Math.PI * 2);
-        ctx.stroke();
-      };
-
       const updateCopyOpacity = (elapsed) => {
-        const textStart = schedule.reset + schedule.transistors + schedule.gates + schedule.buses;
-        const textProgress = Math.min(1, Math.max(0, (elapsed - textStart) / schedule.text));
+        const textStart = schedule.grow * 0.2;
+        const textProgress = Math.min(1, Math.max(0, (elapsed - textStart) / schedule.settle));
         screen.style.setProperty("--copy-opacity", (0.2 + textProgress * 0.8).toFixed(2));
       };
 
@@ -612,11 +527,15 @@
         ctx.fillStyle = palette.bg;
         ctx.fillRect(0, 0, width, height);
 
-        drawGrid();
-        drawResetPulse(elapsed);
-        drawNodes(elapsed);
-        drawGates(elapsed);
-        drawBuses(elapsed);
+        drawBackground();
+        const growProgress = Math.min(1, elapsed / schedule.grow);
+        const swayPhase = Math.max(0, elapsed - schedule.grow);
+        const swayStrength = prefersReducedMotion ? 0 : Math.min(1, swayPhase / 1600);
+        const sway = Math.sin(now * 0.0012) * 0.18 * swayStrength;
+        ctx.shadowBlur = 24;
+        ctx.shadowColor = palette.glow;
+        branches.forEach((branch) => drawBranch(branch, growProgress, sway));
+        ctx.shadowBlur = 0;
         updateStatus(elapsed);
         updateProgress(elapsed);
         updateCopyOpacity(elapsed);
