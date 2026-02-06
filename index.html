@@ -368,21 +368,13 @@
         bus: "rgba(79, 220, 255, 0.65)"
       };
 
-      const schedule = prefersReducedMotion
-        ? {
-            reset: 300,
-            transistors: 400,
-            gates: 400,
-            buses: 400,
-            text: 300
-          }
-        : {
-            reset: 500,
-            transistors: 900,
-            gates: 800,
-            buses: 800,
-            text: 500
-          };
+      const schedule = {
+        reset: 1200,
+        transistors: 2000,
+        gates: 1900,
+        buses: 1900,
+        text: 1100
+      };
 
       const totalDuration = Object.values(schedule).reduce((sum, value) => sum + value, 0);
 
@@ -404,17 +396,12 @@
       };
 
       const buildScene = () => {
-        const spacing = Math.max(12, Math.min(width, height) / (prefersReducedMotion ? 26 : 38));
+        const spacing = Math.max(10, Math.min(width, height) / (prefersReducedMotion ? 28 : 42));
         const cols = Math.floor(width / spacing);
         const rows = Math.floor(height / spacing);
         nodes = [];
-        const maxNodes = prefersReducedMotion ? 800 : 1600;
-        let nodeCount = 0;
         for (let y = 0; y <= rows; y += 1) {
           for (let x = 0; x <= cols; x += 1) {
-            if (nodeCount >= maxNodes) {
-              break;
-            }
             const jitterX = (seedRandom() - 0.5) * spacing * 0.4;
             const jitterY = (seedRandom() - 0.5) * spacing * 0.4;
             nodes.push({
@@ -422,15 +409,11 @@
               y: y * spacing + jitterY,
               activation: schedule.reset + seedRandom() * schedule.transistors
             });
-            nodeCount += 1;
-          }
-          if (nodeCount >= maxNodes) {
-            break;
           }
         }
 
-        const gateColumns = Math.max(4, Math.floor(width / 240));
-        const gateRows = Math.max(2, Math.floor(height / 200));
+        const gateColumns = Math.max(4, Math.floor(width / 260));
+        const gateRows = Math.max(2, Math.floor(height / 220));
         gates = [];
         const gateTypes = ["AND", "OR", "XOR"];
         for (let row = 0; row < gateRows; row += 1) {
@@ -442,7 +425,6 @@
               type,
               x,
               y,
-              size: Math.min(width, height) * 0.045,
               activation: schedule.reset + schedule.transistors + seedRandom() * schedule.gates
             });
           }
@@ -475,8 +457,8 @@
       };
 
       const drawNodes = (elapsed) => {
-        ctx.shadowBlur = 16;
-        ctx.shadowColor = "rgba(79, 220, 255, 0.6)";
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = "rgba(79, 220, 255, 0.55)";
         nodes.forEach((node) => {
           if (elapsed < node.activation) {
             return;
@@ -484,47 +466,34 @@
           const alpha = Math.min(1, (elapsed - node.activation) / 400);
           ctx.fillStyle = `rgba(79, 220, 255, ${0.2 + alpha * 0.6})`;
           ctx.beginPath();
-          ctx.arc(node.x, node.y, 1.8, 0, Math.PI * 2);
+          ctx.arc(node.x, node.y, 1.5, 0, Math.PI * 2);
           ctx.fill();
         });
         ctx.shadowBlur = 0;
       };
 
       const drawGateShape = (gate, glow) => {
-        const size = gate.size;
-        const left = gate.x - size * 0.55;
-        const right = gate.x + size * 0.55;
+        const size = Math.min(width, height) * 0.04;
+        const left = gate.x - size * 0.6;
         const top = gate.y - size * 0.35;
+        const right = gate.x + size * 0.6;
         const bottom = gate.y + size * 0.35;
-        const midY = gate.y;
-        const inputOffset = size * 0.18;
-        const outputX = right + size * 0.18;
         ctx.strokeStyle = glow ? palette.accentAlt : "rgba(79, 220, 255, 0.35)";
-        ctx.lineWidth = glow ? 1.7 : 1.4;
-
-        ctx.beginPath();
-        ctx.moveTo(left - inputOffset, top + size * 0.12);
-        ctx.lineTo(left, top + size * 0.12);
-        ctx.moveTo(left - inputOffset, bottom - size * 0.12);
-        ctx.lineTo(left, bottom - size * 0.12);
-        ctx.moveTo(right, midY);
-        ctx.lineTo(outputX, midY);
-        ctx.stroke();
-
+        ctx.lineWidth = 1.4;
         ctx.beginPath();
         if (gate.type === "AND") {
           ctx.moveTo(left, top);
           ctx.lineTo(left + size * 0.3, top);
-          ctx.arc(left + size * 0.3, midY, size * 0.35, -Math.PI / 2, Math.PI / 2);
+          ctx.arc(left + size * 0.3, gate.y, size * 0.35, -Math.PI / 2, Math.PI / 2);
           ctx.lineTo(left, bottom);
           ctx.closePath();
         } else {
-          ctx.moveTo(left, top);
-          ctx.quadraticCurveTo(left + size * 0.35, midY, left, bottom);
-          ctx.quadraticCurveTo(left + size * 0.55, midY, right, midY);
+          ctx.moveTo(left + size * 0.1, top);
+          ctx.quadraticCurveTo(left + size * 0.45, gate.y, left + size * 0.1, bottom);
+          ctx.quadraticCurveTo(left + size * 0.55, gate.y, right, gate.y);
           if (gate.type === "XOR") {
-            ctx.moveTo(left - size * 0.14, top);
-            ctx.quadraticCurveTo(left + size * 0.2, midY, left - size * 0.14, bottom);
+            ctx.moveTo(left - size * 0.08, top);
+            ctx.quadraticCurveTo(left + size * 0.3, gate.y, left - size * 0.08, bottom);
           }
         }
         ctx.stroke();
@@ -553,9 +522,9 @@
         const phaseTime = elapsed - (schedule.reset + schedule.transistors + schedule.gates);
         const progress = Math.min(1, phaseTime / schedule.buses);
         ctx.strokeStyle = palette.bus;
-        ctx.lineWidth = 2.2;
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = "rgba(79, 220, 255, 0.75)";
+        ctx.lineWidth = 2;
+        ctx.shadowBlur = 16;
+        ctx.shadowColor = "rgba(79, 220, 255, 0.65)";
         buses.forEach((bus, index) => {
           const offset = (index % 2) * 0.2;
           ctx.beginPath();
@@ -565,9 +534,9 @@
           const pulseProgress = (progress + offset) % 1;
           const pulseX = bus.x1 + (bus.x2 - bus.x1) * pulseProgress;
           const pulseY = bus.y1 + (bus.y2 - bus.y1) * pulseProgress;
-          ctx.fillStyle = palette.accentAlt;
+          ctx.fillStyle = palette.accent;
           ctx.beginPath();
-          ctx.arc(pulseX, pulseY, 4.2, 0, Math.PI * 2);
+          ctx.arc(pulseX, pulseY, 3.5, 0, Math.PI * 2);
           ctx.fill();
         });
         ctx.shadowBlur = 0;
@@ -618,7 +587,7 @@
         updateStatus(elapsed);
         updateCopyOpacity(elapsed);
 
-        if (!fadeTriggered && elapsed >= totalDuration + 300) {
+        if (!fadeTriggered && elapsed >= totalDuration + 500) {
           fadeTriggered = true;
           screen.classList.add("is-hidden");
           document.body.classList.remove("is-loading");
