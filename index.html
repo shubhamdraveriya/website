@@ -14,9 +14,25 @@
 <body>
   <div class="loading-screen" role="status" aria-live="polite">
     <canvas id="chip-canvas" aria-hidden="true"></canvas>
+    <div class="loading-holo" aria-hidden="true">
+      <span class="holo-ring"></span>
+      <span class="holo-ring ring-two"></span>
+      <span class="holo-ring ring-three"></span>
+      <span class="holo-core"></span>
+      <span class="scanline"></span>
+    </div>
     <div class="loading-copy">
       <p class="loading-title">SILICON INITIALIZED</p>
-      <p class="loading-subtitle">READY FOR EXECUTION</p>
+      <p class="loading-subtitle">Bootstrapping cybernetic core</p>
+      <div class="loading-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span></span>
+      </div>
+      <p class="loading-progress-value">0%</p>
+      <div class="loading-metrics">
+        <span>PLL LOCK</span>
+        <span>NV DIMM</span>
+        <span>IO SYNC</span>
+      </div>
       <p class="loading-status" aria-hidden="true">Power-on reset…</p>
     </div>
   </div>
@@ -341,6 +357,9 @@
       const canvas = document.getElementById("chip-canvas");
       const screen = document.querySelector(".loading-screen");
       const statusCopy = document.querySelector(".loading-status");
+      const progressTrack = document.querySelector(".loading-progress");
+      const progressBar = document.querySelector(".loading-progress span");
+      const progressValue = document.querySelector(".loading-progress-value");
       if (!canvas || !screen) {
         return;
       }
@@ -369,11 +388,11 @@
       };
 
       const schedule = {
-        reset: 1200,
-        transistors: 2000,
-        gates: 1900,
-        buses: 1900,
-        text: 1100
+        reset: 600,
+        transistors: 800,
+        gates: 700,
+        buses: 700,
+        text: 600
       };
 
       const totalDuration = Object.values(schedule).reduce((sum, value) => sum + value, 0);
@@ -557,6 +576,20 @@
         statusCopy.textContent = current.text;
       };
 
+      const updateProgress = (elapsed) => {
+        const progress = Math.min(1, elapsed / totalDuration);
+        const percentage = Math.round(progress * 100);
+        if (progressBar) {
+          progressBar.style.width = `${percentage}%`;
+        }
+        if (progressValue) {
+          progressValue.textContent = `${percentage}%`;
+        }
+        if (progressTrack) {
+          progressTrack.setAttribute("aria-valuenow", percentage.toString());
+        }
+      };
+
       const drawResetPulse = (elapsed) => {
         const resetProgress = Math.min(1, elapsed / schedule.reset);
         const radius = Math.max(width, height) * (0.1 + resetProgress * 0.6);
@@ -585,9 +618,10 @@
         drawGates(elapsed);
         drawBuses(elapsed);
         updateStatus(elapsed);
+        updateProgress(elapsed);
         updateCopyOpacity(elapsed);
 
-        if (!fadeTriggered && elapsed >= totalDuration + 500) {
+        if (!fadeTriggered && elapsed >= totalDuration + 300) {
           fadeTriggered = true;
           screen.classList.add("is-hidden");
           document.body.classList.remove("is-loading");
