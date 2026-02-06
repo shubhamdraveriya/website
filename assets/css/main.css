@@ -78,8 +78,9 @@ ul {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at top, rgba(79, 220, 255, 0.12), transparent 55%),
-    radial-gradient(circle at 20% 20%, rgba(57, 255, 255, 0.12), transparent 45%),
+    radial-gradient(circle at top, rgba(79, 220, 255, 0.2), transparent 50%),
+    radial-gradient(circle at 20% 20%, rgba(57, 255, 255, 0.18), transparent 45%),
+    radial-gradient(circle at 70% 20%, rgba(57, 255, 136, 0.12), transparent 50%),
     rgba(10, 15, 20, 0.98);
   display: grid;
   place-items: center;
@@ -87,7 +88,7 @@ ul {
   transition: opacity 0.8s ease, visibility 0.8s ease;
   opacity: 1;
   visibility: visible;
-  --copy-opacity: 0.2;
+  --copy-opacity: 0.25;
 }
 
 .loading-screen.is-hidden {
@@ -102,18 +103,80 @@ ul {
   height: 100%;
 }
 
+.loading-holo {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.loading-holo .holo-ring {
+  position: absolute;
+  width: clamp(160px, 28vw, 320px);
+  height: clamp(160px, 28vw, 320px);
+  border-radius: 50%;
+  border: 1px solid rgba(79, 220, 255, 0.35);
+  box-shadow:
+    0 0 25px rgba(79, 220, 255, 0.2),
+    inset 0 0 20px rgba(79, 220, 255, 0.2);
+  animation: ring-spin 3.6s linear infinite;
+}
+
+.loading-holo .ring-two {
+  width: clamp(200px, 34vw, 380px);
+  height: clamp(200px, 34vw, 380px);
+  border-style: dashed;
+  border-color: rgba(57, 255, 136, 0.5);
+  animation-duration: 5s;
+}
+
+.loading-holo .ring-three {
+  width: clamp(240px, 40vw, 460px);
+  height: clamp(240px, 40vw, 460px);
+  border-color: rgba(79, 220, 255, 0.25);
+  animation-direction: reverse;
+  animation-duration: 7s;
+}
+
+.loading-holo .holo-core {
+  width: 88px;
+  height: 88px;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(79, 220, 255, 0.9), transparent 60%),
+    linear-gradient(135deg, rgba(57, 255, 136, 0.2), rgba(79, 220, 255, 0.2));
+  border: 1px solid rgba(79, 220, 255, 0.6);
+  box-shadow:
+    0 0 30px rgba(79, 220, 255, 0.4),
+    0 0 60px rgba(57, 255, 136, 0.3);
+  animation: core-pulse 2.4s ease-in-out infinite;
+}
+
+.loading-holo .scanline {
+  position: absolute;
+  width: min(70vw, 520px);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(79, 220, 255, 0.9), transparent);
+  filter: drop-shadow(0 0 10px rgba(79, 220, 255, 0.8));
+  animation: scan 2.4s ease-in-out infinite;
+}
+
 .loading-copy {
   position: relative;
   z-index: 1;
   text-align: center;
   padding: 1.5rem 2rem;
   border-radius: 12px;
-  background: rgba(9, 16, 24, 0.72);
-  border: 1px solid rgba(79, 220, 255, 0.3);
-  box-shadow: 0 0 32px rgba(79, 220, 255, 0.18);
+  background: rgba(9, 16, 24, 0.78);
+  border: 1px solid rgba(79, 220, 255, 0.35);
+  box-shadow:
+    0 0 32px rgba(79, 220, 255, 0.25),
+    inset 0 0 20px rgba(57, 255, 136, 0.08);
   backdrop-filter: blur(10px);
   opacity: var(--copy-opacity);
   transition: opacity 0.5s ease;
+  min-width: min(80vw, 360px);
 }
 
 .loading-title {
@@ -128,6 +191,46 @@ ul {
 .loading-subtitle {
   color: var(--muted);
   font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.loading-progress {
+  position: relative;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(79, 220, 255, 0.15);
+  overflow: hidden;
+  border: 1px solid rgba(79, 220, 255, 0.25);
+}
+
+.loading-progress span {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  background: linear-gradient(90deg, rgba(57, 255, 136, 0.2), rgba(79, 220, 255, 0.9));
+  box-shadow: 0 0 16px rgba(79, 220, 255, 0.7);
+  transition: width 0.2s ease-out;
+}
+
+.loading-progress-value {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(227, 238, 247, 0.7);
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.loading-metrics {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.9rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(79, 220, 255, 0.65);
+  font-family: "IBM Plex Mono", monospace;
 }
 
 .loading-status {
@@ -137,6 +240,40 @@ ul {
   letter-spacing: 0.15em;
   text-transform: uppercase;
   font-family: "IBM Plex Mono", monospace;
+}
+
+@keyframes ring-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes core-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(-80px);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(80px);
+    opacity: 0.3;
+  }
 }
 
 /* ============================================
