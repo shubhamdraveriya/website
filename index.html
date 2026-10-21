@@ -5,560 +5,242 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="author" content="Shubham Draveriya" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="VLSI and Embedded Systems engineering portfolio of Shubham Draveriya." />
-  <meta name="theme-color" content="#0a0f14" />
-  <title>Shubham Draveriya | VLSI + Embedded Systems</title>
+  <meta name="description" content="Shubham Draveriya: RTL design and embedded systems engineer building RISC-V processors in Verilog and bringing them up on FPGA." />
+  <meta name="theme-color" content="#15172b" />
+  <title>Shubham Draveriya | RTL + Embedded Systems</title>
   <link rel="icon" href="images/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,300..900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" />
   <link rel="stylesheet" href="assets/css/main.css" />
+  <script>document.documentElement.classList.add("js");</script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./assets/vendor/three/three.module.min.js",
+        "three/addons/": "./assets/vendor/three/addons/"
+      }
+    }
+  </script>
 </head>
 <body>
-  <div class="loading-screen" role="status" aria-live="polite">
-    <canvas id="chip-canvas" aria-hidden="true"></canvas>
-    <div class="loading-copy">
-      <p class="loading-title">FRACTAL AWAKENING</p>
-      <p class="loading-subtitle">Synthesizing recursive canopy</p>
-      <div class="loading-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-        <span></span>
-      </div>
-      <p class="loading-progress-value">0%</p>
-      <div class="loading-metrics">
-        <span>ROOT LINK</span>
-        <span>BRANCH SEED</span>
-        <span>WIND FIELD</span>
-      </div>
-      <p class="loading-status" aria-hidden="true">Seeding trunk lattice…</p>
-    </div>
+  <a class="skip" href="#about">Skip to content</a>
+
+  <canvas id="stage" aria-hidden="true"></canvas>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <div class="boot" aria-hidden="true">
+    <p>Powering up the die</p>
+    <span class="boot-line"></span>
   </div>
-  <div class="grid-overlay" aria-hidden="true"></div>
-  <!-- Header / Navigation --> 
-  <header class="site-header">
-    <div class="header-brand">
-      <span class="brand-chip" aria-hidden="true"></span>
-      <div>
-        <p class="eyebrow">VLSI • RTL • Embedded Systems</p>
-        <h1>Shubham Draveriya</h1>
-      </div>
-    </div>
-    <nav class="site-nav">
-      <a href="#hero">Hero</a>
+
+  <header class="bar">
+    <a class="mark" href="#top">Shubham Draveriya</a>
+    <nav class="nav" aria-label="Sections">
       <a href="#about">About</a>
-      <a href="#projects">Projects</a>
+      <a href="#rv32i">RV32I core</a>
+      <a href="#work">On the bench</a>
       <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
     </nav>
-    <div class="header-actions">
-      <a class="button ghost" href="https://drive.google.com/file/d/1MFsvdGlBzK-6fiaRpA9xRiuiCyGWPNLm/view?usp=sharing" target="_blank" rel="noreferrer">Download Resume</a>
-      <a class="button" href="#projects">View IP Blocks</a>
-    </div>
+    <a class="btn btn-ghost btn-small" href="https://drive.google.com/file/d/1MFsvdGlBzK-6fiaRpA9xRiuiCyGWPNLm/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a>
+    <span class="bar-progress" aria-hidden="true"></span>
   </header>
 
+  <!-- Depth gauge: where you are in the chip stack -->
+  <nav class="gauge" aria-label="Chip layers">
+    <span class="gauge-track" aria-hidden="true"><span class="gauge-dot"></span></span>
+    <ol>
+      <li><a href="#top">Lid</a></li>
+      <li><a href="#about">Package</a></li>
+      <li><a href="#rv32i">Die</a></li>
+      <li><a href="#work">Metal stack</a></li>
+      <li><a href="#skills">Silicon</a></li>
+      <li><a href="#contact">Power on</a></li>
+    </ol>
+  </nav>
+
   <main>
-    <!-- HERO / LANDING SECTION -->
-    <section id="hero" class="hero">
-      <div class="hero-content">
-        <p class="signal">System Bring-up | RTL Debug | Silicon Verification</p>
-        <h2>
-          Designing compute blocks that boot on first silicon.
-          <span class="cursor" aria-hidden="true"></span>
-        </h2>
-        <p class="lead">
-          I build RISC-V CPUs, verify RTL with waveform-driven analysis, and integrate
-          embedded software on FPGA prototypes. My focus is clean microarchitecture,
-          deterministic timing, and debug-ready systems.
+    <section id="top" class="layer hero" data-bg="#15172b" style="--sec: #15172b">
+      <div class="content">
+        <h1 class="name"><span>Shubham</span> <span>Draveriya</span></h1>
+        <p class="role">RTL design and embedded systems engineer</p>
+        <p class="lede">
+          I build RISC-V processors in Verilog, debug them waveform by waveform,
+          and bring them up on FPGA boards. Keep scrolling and I'll take the chip apart for you.
         </p>
-        <div class="hero-actions">
-          <a class="button" href="#projects">Featured Project</a>
-          <a class="button ghost" href="https://github.com/shubhamdraveriya" target="_blank" rel="noreferrer">View GitHub</a>
-        </div>
-        <div class="status-panel">
-          <div>
-            <p class="label">Lab Status</p>
-            <p class="value">FPGA Bring-up / Waveform Review</p>
-          </div>
-          <div>
-            <p class="label">Current Focus</p>
-            <p class="value">RV32I Control + Verification</p>
-          </div>
-          <div>
-            <p class="label">Location</p>
-            <p class="value">Hardware Lab • India</p>
-          </div>
+        <div class="actions">
+          <a class="btn" href="#rv32i">See the RV32I core</a>
+          <a class="btn btn-ghost" href="https://github.com/shubhamdraveriya" target="_blank" rel="noreferrer">GitHub profile</a>
         </div>
       </div>
-      <aside class="hero-panel">
-        <div class="panel-header">
-          <span class="panel-dot"></span>
-          <span class="panel-dot"></span>
-          <span class="panel-dot"></span>
-          <p>bringup.log</p>
-        </div>
-        <div class="panel-body">
-          <p><span class="prompt">$</span> load rv32i_core</p>
-          <p><span class="prompt">$</span> run sim --test fibonacci.s</p>
-          <p class="success">✔ PASS: regfile writeback stable</p>
-          <p class="success">✔ PASS: branch target resolved</p>
-          <p class="warning">⚠ NOTE: investigate flush on jalr</p>
-          <div class="waveform">
-            <span></span><span></span><span></span><span></span><span></span><span></span>
-          </div>
-        </div>
-      </aside>
+      <p class="cue" aria-hidden="true"><span></span>Scroll to lift the lid</p>
     </section>
 
-    <!-- ABOUT ME -->
-    <section id="about" class="section about">
-      <div class="section-title">
-        <p class="eyebrow">About Me</p>
-        <h2>Engineer Profile</h2>
-      </div>
-      <div class="about-grid">
+    <section id="about" class="layer about" data-bg="#1b1c36" style="--sec: #1b1c36">
+      <div class="content panel">
+        <h2 class="stretch">I like hardware that has to work the first time.</h2>
         <p>
-          I am an M.Tech VLSI student specializing in frontend VLSI, RTL design,
-          and embedded systems. I work on CPU microarchitecture, RISC-V processors,
-          FPGA-based systems, and low-level hardware-software integration for
-          silicon-ready deliverables.
+          I'm an M.Tech VLSI student working on frontend VLSI, RTL design and embedded systems:
+          CPU microarchitecture, RISC-V processors, FPGA-based systems and the low-level
+          seam where hardware meets software.
         </p>
         <p>
-          I enjoy bringing up hardware from scratch — writing Verilog, debugging
-          waveforms, running assembly on custom cores, and fixing real bring-up bugs.
+          The part I enjoy most is bring-up. Writing the Verilog, running assembly on a core I built,
+          staring at waveforms until the bug gives itself away, then fixing it for real.
         </p>
-        <div class="about-meta">
-          <div>
-            <p class="label">Primary Domains</p>
-            <p class="value">RTL Design • CPU Microarchitecture • VLSI</p>
-          </div>
-          <div>
-            <p class="label">Focus Areas</p>
-            <p class="value">Control Logic • Verification • FPGA Prototyping</p>
-          </div>
-        </div>
+        <dl class="facts">
+          <div><dt>Studying</dt><dd>M.Tech, VLSI design</dd></div>
+          <div><dt>Main areas</dt><dd>RTL design, CPU microarchitecture, verification</dd></div>
+          <div><dt>Also</dt><dd>FPGA prototyping, hardware–software integration</dd></div>
+          <div><dt>Based in</dt><dd>India</dd></div>
+        </dl>
       </div>
     </section>
 
-    <!-- PROJECTS -->
-    <section id="projects" class="section projects">
-      <div class="section-title">
-        <p class="eyebrow">Projects</p>
-        <h2>RTL IP Blocks</h2>
-      </div>
-
-      <article class="project-card featured">
-        <div class="project-header">
-          <div>
-            <p class="eyebrow">Featured Project</p>
-            <h3>RISC-V Single-Core Processor (RV32I)</h3>
-          </div>
-          <a class="button ghost" href="https://github.com/shubhamdraveriya/RISC-V" target="_blank" rel="noreferrer">GitHub</a>
-        </div>
-        <p class="project-overview">
-          Designed and validated a complete RV32I core in Verilog with a clean
-          fetch/decode/execute/writeback pipeline and verified correctness using
-          assembly-level programs.
+    <section id="rv32i" class="layer rv32i" data-bg="#0d2733" style="--sec: #0d2733">
+      <div class="content panel wide">
+        <h2 class="stretch">A RISC-V core, written from scratch</h2>
+        <p class="intro">
+          A complete RV32I processor in Verilog with its own control logic and datapath,
+          verified by running assembly programs directly on the core and checking every
+          writeback in the waveforms.
         </p>
-        <div class="project-grid">
+
+        <figure class="pipe">
+          <figcaption>Follow one instruction through the core. The matching block lights up on the die.</figcaption>
+          <div class="pipe-stages" role="group" aria-label="Instruction stages">
+            <button type="button" class="stage" data-stage="0" style="--c: #6fe3e1">Fetch</button>
+            <button type="button" class="stage" data-stage="1" style="--c: #9b8cff">Decode</button>
+            <button type="button" class="stage" data-stage="2" style="--c: #ff7ab6">Execute</button>
+            <button type="button" class="stage" data-stage="3" style="--c: #f2c14e">Memory</button>
+            <button type="button" class="stage" data-stage="4" style="--c: #7cf29a">Writeback</button>
+          </div>
+          <p class="pipe-note" aria-live="polite">The program counter drives instruction memory and a 32-bit instruction comes back.</p>
+        </figure>
+
+        <div class="cols">
           <div>
-            <h4>Overview</h4>
+            <h3>Built</h3>
             <ul>
-              <li>End-to-end RV32I implementation with control logic and datapath.</li>
-              <li>Assembly programs executed directly on the core.</li>
+              <li>Instruction fetch, decode, ALU, register file and writeback</li>
+              <li>Control flow for branches, jumps and program termination</li>
             </ul>
           </div>
           <div>
-            <h4>What I Built</h4>
+            <h3>Debugged</h3>
             <ul>
-              <li>Instruction fetch, decode, ALU, register file, and writeback.</li>
-              <li>Control flow for branches, jumps, and program termination.</li>
+              <li>Register writeback integrity across instruction classes</li>
+              <li>Control-flow hazards, traced through waveform timing</li>
             </ul>
           </div>
           <div>
-            <h4>What I Debugged</h4>
-            <ul>
-              <li>Register writeback integrity across instruction classes.</li>
-              <li>Control flow hazards using waveform timing.</li>
-            </ul>
-          </div>
-          <div>
-            <h4>Tools Used</h4>
+            <h3>Tools</h3>
             <ul>
               <li>Verilog HDL</li>
               <li>Icarus Verilog</li>
               <li>GTKWave</li>
-              <li>RISC-V Assembly</li>
+              <li>RISC-V assembly</li>
             </ul>
           </div>
         </div>
-      </article>
 
-      <div class="project-grid secondary">
-        <article class="project-card">
-          <div class="project-header">
-            <h3>Pipelined RISC-V Core</h3>
-            <span class="button ghost" aria-disabled="true">In Progress</span>
-          </div>
-          <p class="project-overview">Currently on the bench — pipeline bring-up and hazard handling are underway.</p>
-          <div class="project-grid">
-            <div>
-              <h4>Status</h4>
-              <p>RTL is in build + review. Expecting first sim milestones soon.</p>
-            </div>
-            <div>
-              <h4>Next Up</h4>
-              <p>Pipeline stages, forwarding, and stall control.</p>
-            </div>
-            <div>
-              <h4>Notes</h4>
-              <p>Tracking data hazards, flush behavior, and timing closure.</p>
-            </div>
-            <div>
-              <h4>Tooling</h4>
-              <p>Verilog HDL • GTKWave • FPGA prototyping.</p>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card">
-          <div class="project-header">
-            <h3>AXI4-Lite Interface</h3>
-            <span class="button ghost" aria-disabled="true">Under Construction</span>
-          </div>
-          <p class="project-overview">Work in progress — mapping register file and handshake flow.</p>
-          <div class="project-grid">
-            <div>
-              <h4>Status</h4>
-              <p>Spec draft complete, implementation queued.</p>
-            </div>
-            <div>
-              <h4>Next Up</h4>
-              <p>Handshake logic and address decoding.</p>
-            </div>
-            <div>
-              <h4>Focus</h4>
-              <p>Latency, backpressure, and timing edges.</p>
-            </div>
-            <div>
-              <h4>Tooling</h4>
-              <p>Verilog HDL • Simulation testbenches.</p>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card">
-          <div class="project-header">
-            <h3>FPGA / Embedded Projects</h3>
-            <span class="button ghost" aria-disabled="true">In Progress</span>
-          </div>
-          <p class="project-overview">Bench notes only — bringing multiple boards online and logging results.</p>
-          <div class="project-grid">
-            <div>
-              <h4>Status</h4>
-              <p>Board bring-up and peripheral validation running.</p>
-            </div>
-            <div>
-              <h4>Next Up</h4>
-              <p>Embedded firmware and peripheral drivers.</p>
-            </div>
-            <div>
-              <h4>Focus</h4>
-              <p>Board-level bring-up and real-time issues.</p>
-            </div>
-            <div>
-              <h4>Tooling</h4>
-              <p>FPGA toolchains • Embedded C • Logic analyzers.</p>
-            </div>
-          </div>
-        </article>
+        <a class="btn" href="https://github.com/shubhamdraveriya/RISC-V" target="_blank" rel="noreferrer">Source on GitHub</a>
       </div>
     </section>
 
-    <!-- SKILLS & TOOLS -->
-    <section id="skills" class="section skills">
-      <div class="section-title">
-        <p class="eyebrow">Skills & Tools</p>
-        <h2>Lab Stack</h2>
+    <section id="work" class="layer work" data-bg="#2a1811" style="--sec: #2a1811">
+      <div class="content panel wide">
+        <h2 class="stretch">On the bench right now</h2>
+        <ul class="bench">
+          <li>
+            <div class="bench-head">
+              <h3>Pipelined RISC-V core</h3>
+              <span class="status" style="--s: #f2c14e">In progress</span>
+            </div>
+            <p>Taking the RV32I design to a pipeline: stages, forwarding and stall control, while tracking data hazards, flush behaviour and timing closure.</p>
+            <p class="tools">Verilog HDL, GTKWave, FPGA prototyping</p>
+          </li>
+          <li>
+            <div class="bench-head">
+              <h3>AXI4-Lite interface</h3>
+              <span class="status" style="--s: #e3995b">Spec done, building</span>
+            </div>
+            <p>Handshake logic and address decoding for a register-mapped interface, with a close eye on latency, backpressure and timing edges.</p>
+            <p class="tools">Verilog HDL, simulation testbenches</p>
+          </li>
+          <li>
+            <div class="bench-head">
+              <h3>FPGA and embedded projects</h3>
+              <span class="status" style="--s: #f2c14e">In progress</span>
+            </div>
+            <p>Bringing several boards online and validating peripherals, then writing embedded firmware and drivers and chasing real-time issues.</p>
+            <p class="tools">FPGA toolchains, embedded C, logic analyzers</p>
+          </li>
+        </ul>
       </div>
-      <div class="skills-grid">
-        <div class="skill-card">
-          <h3>RTL & Verification</h3>
-          <ul>
-            <li>Verilog / SystemVerilog</li>
-            <li>Testbench development</li>
-            <li>Timing analysis & waveform debug</li>
-          </ul>
-        </div>
-        <div class="skill-card">
-          <h3>CPU & Microarchitecture</h3>
-          <ul>
-            <li>RISC-V ISA implementation</li>
-            <li>Control/datapath design</li>
-            <li>Pipeline and hazard analysis</li>
-          </ul>
-        </div>
-        <div class="skill-card">
-          <h3>FPGA & Embedded</h3>
-          <ul>
-            <li>FPGA bring-up</li>
-            <li>Embedded C / assembly</li>
-            <li>Hardware-software co-design</li>
-          </ul>
-        </div>
-        <div class="skill-card">
-          <h3>Toolchain</h3>
-          <ul>
-            <li>Icarus Verilog</li>
-            <li>GTKWave</li>
-            <li>Vivado / Quartus (placeholder)</li>
-          </ul>
+    </section>
+
+    <section id="skills" class="layer skills" data-bg="#1d1235" style="--sec: #1d1235">
+      <div class="content panel wide">
+        <h2 class="stretch">The lab stack</h2>
+        <div class="kit">
+          <div>
+            <h3>RTL and verification</h3>
+            <ul>
+              <li>Verilog and SystemVerilog</li>
+              <li>Testbench development</li>
+              <li>Timing analysis and waveform debug</li>
+            </ul>
+          </div>
+          <div>
+            <h3>CPU and microarchitecture</h3>
+            <ul>
+              <li>RISC-V ISA implementation</li>
+              <li>Control and datapath design</li>
+              <li>Pipeline and hazard analysis</li>
+            </ul>
+          </div>
+          <div>
+            <h3>FPGA and embedded</h3>
+            <ul>
+              <li>FPGA bring-up</li>
+              <li>Embedded C and assembly</li>
+              <li>Hardware–software co-design</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Tools</h3>
+            <ul>
+              <li>Icarus Verilog</li>
+              <li>GTKWave</li>
+              <li>Logic analyzers</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- CONTACT / LINKS -->
-    <section id="contact" class="section contact">
-      <div class="section-title">
-        <p class="eyebrow">Contact</p>
-        <h2>Signal Links</h2>
-      </div>
-      <div class="contact-grid">
-        <div class="contact-card">
-          <h3>Let’s Connect</h3>
-          <p>
-            Reach out for RTL roles, bring-up collaborations, or to discuss
-            microarchitecture projects.
-          </p>
-          <div class="contact-actions">
-            <a class="button" href="mailto:shubham@example.com">Email</a>
-            <a class="button ghost" href="https://drive.google.com/file/d/1MFsvdGlBzK-6fiaRpA9xRiuiCyGWPNLm/view?usp=sharing" target="_blank" rel="noreferrer">Download Resume</a>
-          </div>
+    <section id="contact" class="layer contact" data-bg="#e9b949" style="--sec: #e9b949">
+      <div class="content">
+        <h2 class="stretch">Hiring for RTL, verification or bring-up work? Let's talk.</h2>
+        <p>I'm open to internships, full-time roles and collaborations on processor design and FPGA projects.</p>
+        <div class="actions">
+          <a class="btn" href="mailto:shubham@example.com">Email me</a>
+          <a class="btn btn-ghost" href="https://drive.google.com/file/d/1MFsvdGlBzK-6fiaRpA9xRiuiCyGWPNLm/view?usp=sharing" target="_blank" rel="noreferrer">Download resume</a>
         </div>
-        <div class="contact-card links">
-          <h3>Links</h3>
-          <ul>
-            <li><a href="https://github.com/shubhamdraveriya" target="_blank" rel="noreferrer">GitHub</a></li>
-            <li><a href="https://www.linkedin.com/in/shubham-draveriya" target="_blank" rel="noreferrer">LinkedIn</a></li>
-            <li><a href="https://drive.google.com/file/d/1MFsvdGlBzK-6fiaRpA9xRiuiCyGWPNLm/view?usp=sharing" target="_blank" rel="noreferrer">Resume</a></li>
-          </ul>
-        </div>
+        <ul class="links">
+          <li><a href="https://www.linkedin.com/in/shubham-draveriya" target="_blank" rel="noreferrer">LinkedIn</a></li>
+          <li><a href="https://github.com/shubhamdraveriya" target="_blank" rel="noreferrer">GitHub</a></li>
+        </ul>
       </div>
+      <footer class="foot">
+        <p>© 2026 Shubham Draveriya. The chip on this page is rendered live with Three.js.</p>
+      </footer>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <p>© 2024 Shubham Draveriya • VLSI + Embedded Systems Portfolio</p>
-  </footer>
-  <script>
-    (() => {
-      const canvas = document.getElementById("chip-canvas");
-      const screen = document.querySelector(".loading-screen");
-      const statusCopy = document.querySelector(".loading-status");
-      const progressTrack = document.querySelector(".loading-progress");
-      const progressBar = document.querySelector(".loading-progress span");
-      const progressValue = document.querySelector(".loading-progress-value");
-      if (!canvas || !screen) {
-        return;
-      }
-
-      const ctx = canvas.getContext("2d");
-      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-      document.body.classList.add("is-loading");
-
-      let width = 0;
-      let height = 0;
-      let branches = [];
-      let startTime = performance.now();
-      let fadeTriggered = false;
-
-      const palette = {
-        bg: "#0a0f14",
-        glow: "rgba(79, 220, 255, 0.55)",
-        trunk: "rgba(227, 238, 247, 0.85)",
-        branch: "rgba(79, 220, 255, 0.85)",
-        leaf: "rgba(57, 255, 136, 0.8)"
-      };
-
-      const schedule = {
-        grow: 5200,
-        settle: 900
-      };
-
-      const totalDuration = schedule.grow + schedule.settle;
-
-      const seedRandom = (() => {
-        let seed = 2048;
-        return () => {
-          seed = (seed * 9301 + 49297) % 233280;
-          return seed / 233280;
-        };
-      })();
-
-      const resizeCanvas = () => {
-        width = canvas.clientWidth = window.innerWidth;
-        height = canvas.clientHeight = window.innerHeight;
-        canvas.width = Math.floor(width * devicePixelRatio);
-        canvas.height = Math.floor(height * devicePixelRatio);
-        ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
-        buildTree();
-      };
-
-      const buildTree = () => {
-        const trunkLength = Math.min(height * 0.32, 260);
-        const maxDepth = prefersReducedMotion ? 6 : 9;
-        const root = {
-          x: width * 0.5,
-          y: height * 0.82,
-          angle: -Math.PI / 2,
-          length: trunkLength,
-          depth: 0
-        };
-        branches = [];
-
-        const addBranch = (branch) => {
-          const length = branch.length;
-          const endX = branch.x + Math.cos(branch.angle) * length;
-          const endY = branch.y + Math.sin(branch.angle) * length;
-          branches.push({
-            ...branch,
-            endX,
-            endY,
-            growStart: branch.depth / (maxDepth + 1),
-            growEnd: (branch.depth + 1) / (maxDepth + 1)
-          });
-
-          if (branch.depth >= maxDepth) {
-            return;
-          }
-
-          const nextLength = length * (0.68 + seedRandom() * 0.08);
-          const angleVariance = 0.35 + seedRandom() * 0.12;
-          const drift = (seedRandom() - 0.5) * 0.08;
-
-          addBranch({
-            x: endX,
-            y: endY,
-            angle: branch.angle - angleVariance + drift,
-            length: nextLength,
-            depth: branch.depth + 1
-          });
-          addBranch({
-            x: endX,
-            y: endY,
-            angle: branch.angle + angleVariance + drift,
-            length: nextLength,
-            depth: branch.depth + 1
-          });
-        };
-
-        addBranch(root);
-      };
-
-      const drawBackground = () => {
-        const gradient = ctx.createRadialGradient(width * 0.5, height * 0.2, 60, width * 0.5, height * 0.2, width * 0.8);
-        gradient.addColorStop(0, "rgba(79, 220, 255, 0.15)");
-        gradient.addColorStop(1, "rgba(10, 15, 20, 0)");
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, width, height);
-      };
-
-      const drawBranch = (branch, progress, sway) => {
-        if (progress <= branch.growStart) {
-          return;
-        }
-        const localProgress = Math.min(1, (progress - branch.growStart) / (branch.growEnd - branch.growStart));
-        const swayOffset = sway * (1 - branch.depth / 12);
-        const angle = branch.angle + swayOffset;
-        const length = branch.length * localProgress;
-        const endX = branch.x + Math.cos(angle) * length;
-        const endY = branch.y + Math.sin(angle) * length;
-
-        const thickness = Math.max(0.6, 4 - branch.depth * 0.35);
-        ctx.strokeStyle = branch.depth < 2 ? palette.trunk : palette.branch;
-        ctx.lineWidth = thickness;
-        ctx.beginPath();
-        ctx.moveTo(branch.x, branch.y);
-        ctx.lineTo(endX, endY);
-        ctx.stroke();
-
-        if (branch.depth > 5 && localProgress > 0.8) {
-          ctx.fillStyle = palette.leaf;
-          ctx.beginPath();
-          ctx.arc(endX, endY, 1.4, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      };
-
-      const updateStatus = (elapsed) => {
-        if (!statusCopy) {
-          return;
-        }
-        const steps = [
-          { time: 0, text: "Seeding trunk lattice…" },
-          { time: schedule.grow * 0.25, text: "Splitting recursive branches…" },
-          { time: schedule.grow * 0.55, text: "Multiplying canopy geometry…" },
-          { time: schedule.grow * 0.8, text: "Charging bioluminescent tips…" },
-          { time: schedule.grow, text: "Wind field online…" }
-        ];
-        const current = steps.reduce((acc, step) => (elapsed >= step.time ? step : acc), steps[0]);
-        statusCopy.textContent = current.text;
-      };
-
-      const updateProgress = (elapsed) => {
-        const progress = Math.min(1, elapsed / schedule.grow);
-        const percentage = Math.round(progress * 100);
-        if (progressBar) {
-          progressBar.style.width = `${percentage}%`;
-        }
-        if (progressValue) {
-          progressValue.textContent = `${percentage}%`;
-        }
-        if (progressTrack) {
-          progressTrack.setAttribute("aria-valuenow", percentage.toString());
-        }
-      };
-
-      const updateCopyOpacity = (elapsed) => {
-        const textStart = schedule.grow * 0.2;
-        const textProgress = Math.min(1, Math.max(0, (elapsed - textStart) / schedule.settle));
-        screen.style.setProperty("--copy-opacity", (0.2 + textProgress * 0.8).toFixed(2));
-      };
-
-      const render = (now) => {
-        const elapsed = now - startTime;
-        ctx.clearRect(0, 0, width, height);
-        ctx.fillStyle = palette.bg;
-        ctx.fillRect(0, 0, width, height);
-
-        drawBackground();
-        const growProgress = Math.min(1, elapsed / schedule.grow);
-        const swayPhase = Math.max(0, elapsed - schedule.grow);
-        const swayStrength = prefersReducedMotion ? 0 : Math.min(1, swayPhase / 1600);
-        const sway = Math.sin(now * 0.0012) * 0.18 * swayStrength;
-        ctx.shadowBlur = 24;
-        ctx.shadowColor = palette.glow;
-        branches.forEach((branch) => drawBranch(branch, growProgress, sway));
-        ctx.shadowBlur = 0;
-        updateStatus(elapsed);
-        updateProgress(elapsed);
-        updateCopyOpacity(elapsed);
-
-        if (!fadeTriggered && elapsed >= totalDuration + 300) {
-          fadeTriggered = true;
-          screen.classList.add("is-hidden");
-          document.body.classList.remove("is-loading");
-          setTimeout(() => screen.remove(), 1200);
-        }
-
-        if (!fadeTriggered) {
-          requestAnimationFrame(render);
-        }
-      };
-
-      resizeCanvas();
-      window.addEventListener("resize", resizeCanvas);
-      requestAnimationFrame((time) => {
-        startTime = time;
-        render(time);
-      });
-    })();
-  </script>
+  <script src="assets/js/site.js"></script>
+  <script type="module" src="assets/js/scene.js"></script>
 </body>
 </html>
